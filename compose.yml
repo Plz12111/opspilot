@@ -1,0 +1,190 @@
+services:
+  opspilot:
+    build: .
+    environment:
+      OPSPILOT_DATABASE_URL: postgresql+asyncpg://opspilot:opspilot@postgres:5432/opspilot
+      OPSPILOT_REDIS_URL: redis://redis:6379/0
+      OPSPILOT_DB_AUTO_CREATE: "false"
+      OPSPILOT_READINESS_CHECK_EXTERNAL: "true"
+      OPSPILOT_READINESS_TIMEOUT_SECONDS: "1"
+      OPSPILOT_PROMETHEUS_URL: http://prometheus:9090
+      OPSPILOT_LOKI_URL: http://loki:3100
+      OPSPILOT_JAEGER_URL: http://jaeger:16686
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      prometheus:
+        condition: service_started
+      loki:
+        condition: service_started
+      jaeger:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready')",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: opspilot
+      POSTGRES_USER: opspilot
+      POSTGRES_PASSWORD: opspilot
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opspilot -d opspilot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - redis-data:/data
+
+  inventory:
+    build: .
+    command:
+      [
+        "uvicorn",
+        "demo.services.inventory:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8082",
+      ]
+    environment:
+      DEMO_FAULT_TOKEN: ${DEMO_FAULT_TOKEN:-demo-only}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8082/health/ready')",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  order:
+    build: .
+    command:
+      ["uvicorn", "demo.services.order:app", "--host", "0.0.0.0", "--port", "8081"]
+    environment:
+      DEMO_FAULT_TOKEN: ${DEMO_FAULT_TOKEN:-demo-only}
+      INVENTORY_SERVICE_URL: http://inventory:8082
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+    ports:
+      - "8081:8081"
+    depends_on:
+      inventory:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8081/health/ready')",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  gateway:
+    build: .
+    command:
+      ["uvicorn", "demo.services.gateway:app", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      DEMO_FAULT_TOKEN: ${DEMO_FAULT_TOKEN:-demo-only}
+      ORDER_SERVICE_URL: http://order:8081
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+    ports:
+      - "8080:8080"
+    depends_on:
+      order:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8080/health/ready')",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/prometheus/rules.yml:/etc/prometheus/rules.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - gateway
+      - order
+      - inventory
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.0
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+    volumes:
+      - ./deploy/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+      - "9093:9093"
+    depends_on:
+      opspilot:
+        condition: service_healthy
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.64.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+
+  loki:
+    image: grafana/loki:3.3.2
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+
+volumes:
+  postgres-data:
+  redis-data:
+  prometheus-data:

@@ -1,0 +1,1978 @@
+[
+  {
+    "id": "inventory-503-clear",
+    "title": "Inventory returns 503 to order service",
+    "service": "order-service",
+    "expected_root_cause": "inventory_dependency_failure",
+    "expected_evidence_ids": [
+      "evd-i503-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-i503-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "upstream inventory failure: inventory returned 503 for reserve request"
+      },
+      {
+        "id": "evd-i503-2",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "order span failed at inventory dependency"
+      }
+    ]
+  },
+  {
+    "id": "inventory-refused-trace",
+    "title": "Inventory connection refusal",
+    "service": "gateway-service",
+    "expected_root_cause": "inventory_dependency_failure",
+    "expected_evidence_ids": [
+      "evd-iref-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-iref-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "upstream inventory failure caused by connection refused"
+      },
+      {
+        "id": "evd-iref-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "gateway error ratio increased",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "inventory-503-with-latency-noise",
+    "title": "Inventory failure with misleading latency signal",
+    "service": "order-service",
+    "expected_root_cause": "inventory_dependency_failure",
+    "expected_evidence_ids": [
+      "evd-inoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-inoise-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "inventory returned 503 during checkout"
+      },
+      {
+        "id": "evd-inoise-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "inventory p95 indicates slow downstream calls",
+        "call_index": 2
+      }
+    ]
+  },
+  {
+    "id": "inventory-latency-clear",
+    "title": "Inventory latency exceeds client deadline",
+    "service": "inventory-service",
+    "expected_root_cause": "inventory_latency",
+    "expected_evidence_ids": [
+      "evd-ilat-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-ilat-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "inventory p95 is 4.8 seconds showing a slow downstream",
+        "call_index": 2
+      },
+      {
+        "id": "evd-ilat-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "request deadline exceeded while reserving stock"
+      }
+    ]
+  },
+  {
+    "id": "inventory-deadline-trace",
+    "title": "Slow inventory span",
+    "service": "order-service",
+    "expected_root_cause": "inventory_latency",
+    "expected_evidence_ids": [
+      "evd-idead-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-idead-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "slow downstream inventory span ended with deadline exceeded"
+      },
+      {
+        "id": "evd-idead-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "check dependency latency before restarting"
+      }
+    ]
+  },
+  {
+    "id": "inventory-latency-telemetry-gap",
+    "title": "Inventory latency with incomplete telemetry",
+    "service": "inventory-service",
+    "expected_root_cause": "inventory_latency",
+    "expected_evidence_ids": [
+      "evd-igap-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-igap-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "inventory span duration is abnormal but duration buckets are missing"
+      },
+      {
+        "id": "evd-igap-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "client request timed out without downstream error detail"
+      }
+    ]
+  },
+  {
+    "id": "database-pool-clear",
+    "title": "Database connection pool exhausted",
+    "service": "inventory-service",
+    "expected_root_cause": "database_pool_exhaustion",
+    "expected_evidence_ids": [
+      "evd-dbpool-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dbpool-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "connection pool exhausted: timeout acquiring connection"
+      },
+      {
+        "id": "evd-dbpool-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "active connections at limit for five minutes",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "database-pool-after-deploy-noise",
+    "title": "Pool exhaustion after a deployment",
+    "service": "inventory-service",
+    "expected_root_cause": "database_pool_exhaustion",
+    "expected_evidence_ids": [
+      "evd-dbnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dbnoise-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "connection pool exhausted on write path"
+      },
+      {
+        "id": "evd-dbnoise-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "error rate after deployment; rollback restored the old release"
+      }
+    ]
+  },
+  {
+    "id": "database-pool-metrics",
+    "title": "Pool active connections at hard limit",
+    "service": "order-service",
+    "expected_root_cause": "database_pool_exhaustion",
+    "expected_evidence_ids": [
+      "evd-dbmet-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dbmet-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "active connections at limit and timeout acquiring connection",
+        "call_index": 1
+      },
+      {
+        "id": "evd-dbmet-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "order write failed waiting for database"
+      }
+    ]
+  },
+  {
+    "id": "redis-stampede-clear",
+    "title": "Cache stampede overloads database",
+    "service": "order-service",
+    "expected_root_cause": "redis_cache_stampede",
+    "expected_evidence_ids": [
+      "evd-redis-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-redis-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "cache miss rate reached 96 percent with database qps spike",
+        "call_index": 1
+      },
+      {
+        "id": "evd-redis-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "redis evictions increased after key expiry"
+      }
+    ]
+  },
+  {
+    "id": "redis-eviction-runbook",
+    "title": "Redis eviction cascade",
+    "service": "gateway-service",
+    "expected_root_cause": "redis_cache_stampede",
+    "expected_evidence_ids": [
+      "evd-revict-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-revict-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "redis evictions and cache miss rate rose together",
+        "call_index": 2
+      },
+      {
+        "id": "evd-revict-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "database qps spike indicates stampede recovery procedure"
+      }
+    ]
+  },
+  {
+    "id": "redis-stampede-telemetry-gap",
+    "title": "Cache stampede with missing Redis metrics",
+    "service": "order-service",
+    "expected_root_cause": "redis_cache_stampede",
+    "expected_evidence_ids": [
+      "evd-rgap-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-rgap-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "cache effectiveness changed abruptly but Redis exporter is unavailable",
+        "call_index": 1
+      },
+      {
+        "id": "evd-rgap-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "database traffic rose without a matching user traffic increase"
+      }
+    ]
+  },
+  {
+    "id": "deployment-regression-clear",
+    "title": "New release increases error rate",
+    "service": "inventory-service",
+    "expected_root_cause": "bad_deployment",
+    "expected_evidence_ids": [
+      "evd-deploy-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-deploy-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "error rate after deployment v2.4 increased immediately",
+        "call_index": 1
+      },
+      {
+        "id": "evd-deploy-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "rollback restored service in the previous incident"
+      }
+    ]
+  },
+  {
+    "id": "deployment-trace-regression",
+    "title": "New version introduces validation regression",
+    "service": "order-service",
+    "expected_root_cause": "bad_deployment",
+    "expected_evidence_ids": [
+      "evd-dtrace-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dtrace-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "new version regression appeared in validation span"
+      },
+      {
+        "id": "evd-dtrace-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "error rate after deployment aligns with release timestamp",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "deployment-with-memory-noise",
+    "title": "Deployment incident with memory noise",
+    "service": "order-service",
+    "expected_root_cause": "bad_deployment",
+    "expected_evidence_ids": [
+      "evd-dnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dnoise-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "error rate after deployment increased",
+        "call_index": 1
+      },
+      {
+        "id": "evd-dnoise-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "worker was oomkilled after out of memory condition"
+      }
+    ]
+  },
+  {
+    "id": "memory-leak-clear",
+    "title": "Worker memory leak",
+    "service": "order-service",
+    "expected_root_cause": "memory_leak",
+    "expected_evidence_ids": [
+      "evd-mem-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-mem-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "process rss grows continuously until out of memory",
+        "call_index": 2
+      },
+      {
+        "id": "evd-mem-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "container was oomkilled by the runtime"
+      }
+    ]
+  },
+  {
+    "id": "memory-oom-restart",
+    "title": "Repeated OOM restart loop",
+    "service": "inventory-service",
+    "expected_root_cause": "memory_leak",
+    "expected_evidence_ids": [
+      "evd-oom-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-oom-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "container oomkilled after out of memory"
+      },
+      {
+        "id": "evd-oom-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "rss grows continuously between restarts",
+        "call_index": 2
+      }
+    ]
+  },
+  {
+    "id": "memory-with-disk-noise",
+    "title": "Memory leak with disk pressure noise",
+    "service": "inventory-service",
+    "expected_root_cause": "memory_leak",
+    "expected_evidence_ids": [
+      "evd-mnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-mnoise-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "rss grows continuously in inventory workers",
+        "call_index": 2
+      },
+      {
+        "id": "evd-mnoise-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "no space left while disk usage above 95 percent"
+      }
+    ]
+  },
+  {
+    "id": "network-partition-clear",
+    "title": "Cross-zone network partition",
+    "service": "gateway-service",
+    "expected_root_cause": "network_partition",
+    "expected_evidence_ids": [
+      "evd-net-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-net-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "packet loss reached 70 percent and host unreachable errors rose",
+        "call_index": 1
+      },
+      {
+        "id": "evd-net-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "connection reset across availability zones"
+      }
+    ]
+  },
+  {
+    "id": "network-reset-traces",
+    "title": "Network resets between services",
+    "service": "order-service",
+    "expected_root_cause": "network_partition",
+    "expected_evidence_ids": [
+      "evd-ntrace-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-ntrace-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "connection reset and host unreachable on inventory span"
+      },
+      {
+        "id": "evd-ntrace-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "packet loss isolated to one zone",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "network-with-tls-noise",
+    "title": "Partition with unrelated TLS warning",
+    "service": "gateway-service",
+    "expected_root_cause": "network_partition",
+    "expected_evidence_ids": [
+      "evd-nnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-nnoise-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "packet loss and host unreachable affect a subnet",
+        "call_index": 1
+      },
+      {
+        "id": "evd-nnoise-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "one stale client logged x509 warning"
+      }
+    ]
+  },
+  {
+    "id": "certificate-expired-clear",
+    "title": "Expired service certificate",
+    "service": "gateway-service",
+    "expected_root_cause": "certificate_expiry",
+    "expected_evidence_ids": [
+      "evd-cert-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-cert-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "x509 certificate expired; tls handshake failed"
+      },
+      {
+        "id": "evd-cert-2",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "secure upstream connection rejected certificate"
+      }
+    ]
+  },
+  {
+    "id": "certificate-handshake-trace",
+    "title": "TLS handshake fails after certificate expiry",
+    "service": "order-service",
+    "expected_root_cause": "certificate_expiry",
+    "expected_evidence_ids": [
+      "evd-ctls-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-ctls-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "tls handshake failed because certificate expired"
+      },
+      {
+        "id": "evd-ctls-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "rotate x509 certificate and verify trust bundle"
+      }
+    ]
+  },
+  {
+    "id": "certificate-with-log-outage",
+    "title": "Certificate expiry while log backend is unavailable",
+    "service": "gateway-service",
+    "expected_root_cause": "certificate_expiry",
+    "expected_evidence_ids": [
+      "evd-cfail-1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-cfail-1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "x509 certificate expired causing tls handshake failed"
+      },
+      {
+        "id": "evd-cfail-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "certificate expired"
+      }
+    ]
+  },
+  {
+    "id": "rate-limit-clear",
+    "title": "External API quota exhausted",
+    "service": "order-service",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "expected_evidence_ids": [
+      "evd-rate-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-rate-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "http 429: rate limit exceeded and quota exhausted"
+      },
+      {
+        "id": "evd-rate-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "external dependency rejection count increased",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "rate-limit-metrics",
+    "title": "Sustained 429 responses",
+    "service": "gateway-service",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "expected_evidence_ids": [
+      "evd-rmet-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-rmet-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "http 429 responses indicate quota exhausted",
+        "call_index": 1
+      },
+      {
+        "id": "evd-rmet-2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "request quota increase after rate limit exceeded"
+      }
+    ]
+  },
+  {
+    "id": "rate-limit-with-network-noise",
+    "title": "Quota exhaustion with transient network loss",
+    "service": "gateway-service",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "expected_evidence_ids": [
+      "evd-rnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-rnoise-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "rate limit exceeded and quota exhausted for tenant"
+      },
+      {
+        "id": "evd-rnoise-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "brief packet loss recovered before incident",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "id": "disk-saturation-clear",
+    "title": "Service disk fills completely",
+    "service": "inventory-service",
+    "expected_root_cause": "disk_saturation",
+    "expected_evidence_ids": [
+      "evd-disk-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-disk-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "disk usage above 98 percent and io wait saturated",
+        "call_index": 2
+      },
+      {
+        "id": "evd-disk-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "no space left while writing inventory journal"
+      }
+    ]
+  },
+  {
+    "id": "disk-no-space-logs",
+    "title": "No space left errors",
+    "service": "order-service",
+    "expected_root_cause": "disk_saturation",
+    "expected_evidence_ids": [
+      "evd-dspace-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dspace-1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "no space left on device; disk usage above configured threshold"
+      },
+      {
+        "id": "evd-dspace-2",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "io wait saturated on one node",
+        "call_index": 2
+      }
+    ]
+  },
+  {
+    "id": "disk-with-memory-noise",
+    "title": "Disk saturation with memory pressure noise",
+    "service": "inventory-service",
+    "expected_root_cause": "disk_saturation",
+    "expected_evidence_ids": [
+      "evd-dmnoise-1"
+    ],
+    "observations": [
+      {
+        "id": "evd-dmnoise-1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "disk usage above 97 percent and io wait saturated",
+        "call_index": 2
+      },
+      {
+        "id": "evd-dmnoise-2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "one worker approached memory limit without restart"
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_dependency_failure",
+    "id": "inventory-dependency-failure-corroborated",
+    "title": "Corroborated inventory dependency failure signal",
+    "expected_evidence_ids": [
+      "evd-g01-c1",
+      "evd-g01-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g01-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms inventory returned 503",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g01-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms connection refused",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_dependency_failure",
+    "id": "inventory-dependency-failure-single-log",
+    "title": "Single log signal for inventory dependency failure",
+    "expected_evidence_ids": [
+      "evd-g01-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g01-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: inventory returned 503 and connection refused",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_dependency_failure",
+    "id": "inventory-dependency-failure-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for inventory_dependency_failure",
+    "expected_evidence_ids": [
+      "evd-g01-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g01-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains inventory returned 503",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g01-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions cache miss rate and database qps spike",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_dependency_failure",
+    "id": "inventory-dependency-failure-telemetry-gap",
+    "title": "Partial telemetry for inventory dependency failure",
+    "expected_evidence_ids": [
+      "evd-g01-t1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-g01-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows inventory returned 503 and connection refused",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g01-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_dependency_failure",
+    "id": "inventory-dependency-failure-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for inventory dependency failure",
+    "expected_evidence_ids": [
+      "evd-g01-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g01-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports inventory returned 503",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g01-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes cache miss rate and database qps spike",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_latency",
+    "id": "inventory-latency-corroborated",
+    "title": "Corroborated inventory latency signal",
+    "expected_evidence_ids": [
+      "evd-g02-c1",
+      "evd-g02-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g02-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms inventory p95",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g02-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms deadline exceeded",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_latency",
+    "id": "inventory-latency-single-log",
+    "title": "Single log signal for inventory latency",
+    "expected_evidence_ids": [
+      "evd-g02-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g02-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: inventory p95 and deadline exceeded",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_latency",
+    "id": "inventory-latency-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for inventory_latency",
+    "expected_evidence_ids": [
+      "evd-g02-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g02-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains inventory p95",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g02-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions error rate after deployment and new version regression",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_latency",
+    "id": "inventory-latency-telemetry-gap",
+    "title": "Partial telemetry for inventory latency",
+    "expected_evidence_ids": [
+      "evd-g02-t1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-g02-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows inventory p95 and deadline exceeded",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g02-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "inventory_latency",
+    "id": "inventory-latency-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for inventory latency",
+    "expected_evidence_ids": [
+      "evd-g02-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g02-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports inventory p95",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g02-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes error rate after deployment and new version regression",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "database_pool_exhaustion",
+    "id": "database-pool-exhaustion-corroborated",
+    "title": "Corroborated database pool exhaustion signal",
+    "expected_evidence_ids": [
+      "evd-g03-c1",
+      "evd-g03-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g03-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms connection pool exhausted",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g03-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms active connections at limit",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "database_pool_exhaustion",
+    "id": "database-pool-exhaustion-single-log",
+    "title": "Single log signal for database pool exhaustion",
+    "expected_evidence_ids": [
+      "evd-g03-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g03-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: connection pool exhausted and active connections at limit",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "database_pool_exhaustion",
+    "id": "database-pool-exhaustion-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for database_pool_exhaustion",
+    "expected_evidence_ids": [
+      "evd-g03-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g03-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains connection pool exhausted",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g03-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions rss grows continuously and oomkilled",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "database_pool_exhaustion",
+    "id": "database-pool-exhaustion-telemetry-gap",
+    "title": "Partial telemetry for database pool exhaustion",
+    "expected_evidence_ids": [
+      "evd-g03-t1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-g03-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows connection pool exhausted and active connections at limit",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g03-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "database_pool_exhaustion",
+    "id": "database-pool-exhaustion-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for database pool exhaustion",
+    "expected_evidence_ids": [
+      "evd-g03-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g03-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports connection pool exhausted",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g03-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes rss grows continuously and oomkilled",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "redis_cache_stampede",
+    "id": "redis-cache-stampede-corroborated",
+    "title": "Corroborated redis cache stampede signal",
+    "expected_evidence_ids": [
+      "evd-g04-c1",
+      "evd-g04-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g04-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms cache miss rate",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g04-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms database qps spike",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "redis_cache_stampede",
+    "id": "redis-cache-stampede-single-log",
+    "title": "Single log signal for redis cache stampede",
+    "expected_evidence_ids": [
+      "evd-g04-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g04-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: cache miss rate and database qps spike",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "redis_cache_stampede",
+    "id": "redis-cache-stampede-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for redis_cache_stampede",
+    "expected_evidence_ids": [
+      "evd-g04-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g04-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains cache miss rate",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g04-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions packet loss and host unreachable",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "redis_cache_stampede",
+    "id": "redis-cache-stampede-telemetry-gap",
+    "title": "Partial telemetry for redis cache stampede",
+    "expected_evidence_ids": [
+      "evd-g04-t1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-g04-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows cache miss rate and database qps spike",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g04-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "redis_cache_stampede",
+    "id": "redis-cache-stampede-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for redis cache stampede",
+    "expected_evidence_ids": [
+      "evd-g04-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g04-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports cache miss rate",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g04-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes packet loss and host unreachable",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "bad_deployment",
+    "id": "bad-deployment-corroborated",
+    "title": "Corroborated bad deployment signal",
+    "expected_evidence_ids": [
+      "evd-g05-c1",
+      "evd-g05-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g05-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms error rate after deployment",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g05-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms new version regression",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "bad_deployment",
+    "id": "bad-deployment-single-log",
+    "title": "Single log signal for bad deployment",
+    "expected_evidence_ids": [
+      "evd-g05-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g05-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: error rate after deployment and new version regression",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "bad_deployment",
+    "id": "bad-deployment-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for bad_deployment",
+    "expected_evidence_ids": [
+      "evd-g05-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g05-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains error rate after deployment",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g05-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions certificate expired and tls handshake failed",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "bad_deployment",
+    "id": "bad-deployment-telemetry-gap",
+    "title": "Partial telemetry for bad deployment",
+    "expected_evidence_ids": [
+      "evd-g05-t1"
+    ],
+    "failed_tools": [
+      "query_logs"
+    ],
+    "observations": [
+      {
+        "id": "evd-g05-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows error rate after deployment and new version regression",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g05-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "order-service",
+    "environment": "demo",
+    "expected_root_cause": "bad_deployment",
+    "id": "bad-deployment-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for bad deployment",
+    "expected_evidence_ids": [
+      "evd-g05-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g05-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports error rate after deployment",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g05-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes certificate expired and tls handshake failed",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "memory_leak",
+    "id": "memory-leak-corroborated",
+    "title": "Corroborated memory leak signal",
+    "expected_evidence_ids": [
+      "evd-g06-c1",
+      "evd-g06-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g06-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms rss grows continuously",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g06-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms oomkilled",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "memory_leak",
+    "id": "memory-leak-single-log",
+    "title": "Single log signal for memory leak",
+    "expected_evidence_ids": [
+      "evd-g06-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g06-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: rss grows continuously and oomkilled",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "memory_leak",
+    "id": "memory-leak-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for memory_leak",
+    "expected_evidence_ids": [
+      "evd-g06-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g06-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains rss grows continuously",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g06-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions http 429 and quota exhausted",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "memory_leak",
+    "id": "memory-leak-telemetry-gap",
+    "title": "Partial telemetry for memory leak",
+    "expected_evidence_ids": [
+      "evd-g06-t1"
+    ],
+    "failed_tools": [],
+    "observations": [
+      {
+        "id": "evd-g06-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows rss grows continuously and oomkilled",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g06-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "memory_leak",
+    "id": "memory-leak-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for memory leak",
+    "expected_evidence_ids": [
+      "evd-g06-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g06-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports rss grows continuously",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g06-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes http 429 and quota exhausted",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "network_partition",
+    "id": "network-partition-corroborated",
+    "title": "Corroborated network partition signal",
+    "expected_evidence_ids": [
+      "evd-g07-c1",
+      "evd-g07-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g07-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms packet loss",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g07-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms host unreachable",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "network_partition",
+    "id": "network-partition-single-log",
+    "title": "Single log signal for network partition",
+    "expected_evidence_ids": [
+      "evd-g07-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g07-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: packet loss and host unreachable",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "network_partition",
+    "id": "network-partition-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for network_partition",
+    "expected_evidence_ids": [
+      "evd-g07-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g07-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains packet loss",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g07-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions disk usage above and no space left",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "network_partition",
+    "id": "network-partition-telemetry-gap",
+    "title": "Partial telemetry for network partition",
+    "expected_evidence_ids": [
+      "evd-g07-t1"
+    ],
+    "failed_tools": [],
+    "observations": [
+      {
+        "id": "evd-g07-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows packet loss and host unreachable",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g07-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "network_partition",
+    "id": "network-partition-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for network partition",
+    "expected_evidence_ids": [
+      "evd-g07-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g07-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports packet loss",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g07-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes disk usage above and no space left",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "certificate_expiry",
+    "id": "certificate-expiry-corroborated",
+    "title": "Corroborated certificate expiry signal",
+    "expected_evidence_ids": [
+      "evd-g08-c1",
+      "evd-g08-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g08-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms certificate expired",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g08-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms tls handshake failed",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "certificate_expiry",
+    "id": "certificate-expiry-single-log",
+    "title": "Single log signal for certificate expiry",
+    "expected_evidence_ids": [
+      "evd-g08-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g08-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: certificate expired and tls handshake failed",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "certificate_expiry",
+    "id": "certificate-expiry-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for certificate_expiry",
+    "expected_evidence_ids": [
+      "evd-g08-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g08-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains certificate expired",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g08-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions inventory returned 503 and connection refused",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "certificate_expiry",
+    "id": "certificate-expiry-telemetry-gap",
+    "title": "Partial telemetry for certificate expiry",
+    "expected_evidence_ids": [
+      "evd-g08-t1"
+    ],
+    "failed_tools": [],
+    "observations": [
+      {
+        "id": "evd-g08-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows certificate expired and tls handshake failed",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g08-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "certificate_expiry",
+    "id": "certificate-expiry-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for certificate expiry",
+    "expected_evidence_ids": [
+      "evd-g08-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g08-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports certificate expired",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g08-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes inventory returned 503 and connection refused",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "id": "rate-limit-exhaustion-corroborated",
+    "title": "Corroborated rate limit exhaustion signal",
+    "expected_evidence_ids": [
+      "evd-g09-c1",
+      "evd-g09-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g09-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms http 429",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g09-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms quota exhausted",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "id": "rate-limit-exhaustion-single-log",
+    "title": "Single log signal for rate limit exhaustion",
+    "expected_evidence_ids": [
+      "evd-g09-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g09-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: http 429 and quota exhausted",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "id": "rate-limit-exhaustion-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for rate_limit_exhaustion",
+    "expected_evidence_ids": [
+      "evd-g09-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g09-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains http 429",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g09-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions inventory p95 and deadline exceeded",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "id": "rate-limit-exhaustion-telemetry-gap",
+    "title": "Partial telemetry for rate limit exhaustion",
+    "expected_evidence_ids": [
+      "evd-g09-t1"
+    ],
+    "failed_tools": [],
+    "observations": [
+      {
+        "id": "evd-g09-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows http 429 and quota exhausted",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g09-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "gateway-service",
+    "environment": "demo",
+    "expected_root_cause": "rate_limit_exhaustion",
+    "id": "rate-limit-exhaustion-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for rate limit exhaustion",
+    "expected_evidence_ids": [
+      "evd-g09-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g09-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports http 429",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g09-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes inventory p95 and deadline exceeded",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "disk_saturation",
+    "id": "disk-saturation-corroborated",
+    "title": "Corroborated disk saturation signal",
+    "expected_evidence_ids": [
+      "evd-g10-c1",
+      "evd-g10-c2"
+    ],
+    "observations": [
+      {
+        "id": "evd-g10-c1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "runtime metric confirms disk usage above",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g10-c2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "application log confirms no space left",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "disk_saturation",
+    "id": "disk-saturation-single-log",
+    "title": "Single log signal for disk saturation",
+    "expected_evidence_ids": [
+      "evd-g10-l1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g10-l1",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "runtime failure: disk usage above and no space left",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "disk_saturation",
+    "id": "disk-saturation-runbook-noise",
+    "title": "Runtime signal with misleading Runbook for disk_saturation",
+    "expected_evidence_ids": [
+      "evd-g10-n1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g10-n1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "live trace contains disk usage above",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g10-n2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "historical note mentions connection pool exhausted and active connections at limit",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "disk_saturation",
+    "id": "disk-saturation-telemetry-gap",
+    "title": "Partial telemetry for disk saturation",
+    "expected_evidence_ids": [
+      "evd-g10-t1"
+    ],
+    "failed_tools": [],
+    "observations": [
+      {
+        "id": "evd-g10-t1",
+        "tool_name": "query_traces",
+        "source_type": "traces",
+        "content": "surviving trace shows disk usage above and no space left",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g10-t2",
+        "tool_name": "query_logs",
+        "source_type": "logs",
+        "content": "this recording is unavailable when the log tool fails",
+        "call_index": 1
+      }
+    ]
+  },
+  {
+    "service": "inventory-service",
+    "environment": "demo",
+    "expected_root_cause": "disk_saturation",
+    "id": "disk-saturation-ambiguous-noise",
+    "title": "Ambiguous noisy evidence for disk saturation",
+    "expected_evidence_ids": [
+      "evd-g10-a1"
+    ],
+    "observations": [
+      {
+        "id": "evd-g10-a1",
+        "tool_name": "query_metrics",
+        "source_type": "metrics",
+        "content": "current incident metric reports disk usage above",
+        "call_index": 1
+      },
+      {
+        "id": "evd-g10-a2",
+        "tool_name": "search_runbooks",
+        "source_type": "runbook",
+        "content": "generic recovery text includes connection pool exhausted and active connections at limit",
+        "call_index": 1
+      }
+    ]
+  }
+]
