@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked --all-groups
+      - run: make lint
+      - run: make test
+      - run: uv build
+      - run: docker compose config --quiet
+
+  container-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t opspilot:ci .
+      - run: docker run -d --name opspilot -p 8000:8000 -e OPSPILOT_DATABASE_URL=sqlite+aiosqlite:////tmp/opspilot.db opspilot:ci
+      - run: |
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:8000/health/ready && exit 0
+            sleep 1
+          done
+          docker logs opspilot
+          exit 1
+      - run: curl --fail --silent http://127.0.0.1:8000/ | grep OpsPilot
+
+  resilience-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked --all-groups
+      - run: docker compose up -d --build
+      - name: Wait for demo stack
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8000/health/ready >/dev/null \
+              && curl --fail --silent http://127.0.0.1:8080/health/ready >/dev/null \
+              && curl --fail --silent http://127.0.0.1:8082/health/ready >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose ps
+          exit 1
+      - run: make resilience-quick
+      - if: always()
+        run: docker compose logs --no-color > resilience-compose.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resilience-reports
+          path: |
+            evals/reports/resilience-latest.json
+            evals/reports/resilience-latest.md
+            resilience-compose.log

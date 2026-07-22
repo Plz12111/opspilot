@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "run_id": "8ba20f69b308",
+  "generated_at": "2026-07-22T07:19:57.397978+00:00",
+  "passed": true,
+  "total_requests": 415,
+  "configuration": {
+    "concurrency": 50,
+    "quick": false,
+    "timeout_seconds": 15.0,
+    "opspilot_url": "http://127.0.0.1:8000",
+    "gateway_url": "http://127.0.0.1:8080",
+    "inventory_url": "http://127.0.0.1:8082"
+  },
+  "scenarios": [
+    {
+      "name": "duplicate_alert_burst",
+      "passed": true,
+      "requests": 50,
+      "duration_seconds": 0.214,
+      "rps": 233.12,
+      "p50_ms": 198.76,
+      "p95_ms": 213.26,
+      "p99_ms": 214.11,
+      "statuses": {
+        "202": 50
+      },
+      "invariants": {
+        "all_requests_accepted": true,
+        "one_incident_created": true,
+        "all_retries_deduplicated": true
+      },
+      "details": {
+        "created": 1,
+        "duplicates": 49,
+        "incident_ids": [
+          "inc_51b993ed35d445158626a230b34d32bf"
+        ]
+      }
+    },
+    {
+      "name": "distinct_alert_merge",
+      "passed": true,
+      "requests": 50,
+      "duration_seconds": 0.194,
+      "rps": 257.82,
+      "p50_ms": 164.01,
+      "p95_ms": 190.29,
+      "p99_ms": 191.2,
+      "statuses": {
+        "202": 50
+      },
+      "invariants": {
+        "all_requests_accepted": true,
+        "occurrences_merged_to_one_incident": true,
+        "alert_count_is_atomic": true
+      },
+      "details": {
+        "incident_ids": [
+          "inc_cb1b1a02b9a34f5eb0e5647d64acaac4"
+        ],
+        "persisted_alert_count": 50
+      }
+    },
+    {
+      "name": "order_idempotency_burst",
+      "passed": true,
+      "requests": 200,
+      "duration_seconds": 0.277,
+      "rps": 721.59,
+      "p50_ms": 63.38,
+      "p95_ms": 94.86,
+      "p99_ms": 117.33,
+      "statuses": {
+        "200": 200
+      },
+      "invariants": {
+        "all_orders_succeeded": true,
+        "order_ids_are_idempotent": true,
+        "inventory_reserved_once_per_order": true
+      },
+      "details": {
+        "unique_order_ids": 20,
+        "unique_reservations": 20
+      }
+    },
+    {
+      "name": "investigation_idempotency_burst",
+      "passed": true,
+      "requests": 20,
+      "duration_seconds": 0.17,
+      "rps": 117.99,
+      "p50_ms": 164.42,
+      "p95_ms": 169.11,
+      "p99_ms": 169.14,
+      "statuses": {
+        "202": 20
+      },
+      "invariants": {
+        "all_requests_accepted": true,
+        "one_run_created": true,
+        "run_reached_terminal_state": true
+      },
+      "details": {
+        "run_ids": [
+          "run_4898700ff7cd48cd8ba195018105566c"
+        ],
+        "terminal_status": "BUDGET_EXHAUSTED"
+      }
+    },
+    {
+      "name": "remediation_exactly_once_burst",
+      "passed": true,
+      "requests": 60,
+      "duration_seconds": 0.215,
+      "rps": 278.98,
+      "p50_ms": 26.97,
+      "p95_ms": 148.77,
+      "p99_ms": 151.74,
+      "statuses": {
+        "200": 40,
+        "201": 20
+      },
+      "invariants": {
+        "one_action_proposed": true,
+        "approval_is_idempotent": true,
+        "execution_is_exactly_once": true
+      },
+      "details": {
+        "action_ids": [
+          "act_ac1105bd21f94bc49fa02a838cd30adc"
+        ],
+        "execution_ids": [
+          "exe_d7f8b98b818644beb92cbbbbfb78b1bd"
+        ]
+      }
+    },
+    {
+      "name": "dependency_failure_and_recovery",
+      "passed": true,
+      "requests": 35,
+      "duration_seconds": 0.057,
+      "rps": 614.07,
+      "p50_ms": 32.32,
+      "p95_ms": 45.65,
+      "p99_ms": 45.93,
+      "statuses": {
+        "200": 5,
+        "503": 30
+      },
+      "invariants": {
+        "fault_control_accepted": true,
+        "dependency_errors_propagated_as_503": true,
+        "fault_was_reset": true,
+        "service_recovered": true
+      },
+      "details": {
+        "fault_requests": 30,
+        "recovery_requests": 5
+      }
+    }
+  ]
+}

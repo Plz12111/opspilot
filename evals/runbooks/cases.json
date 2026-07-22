@@ -1,0 +1,26 @@
+[
+  {
+    "id": "inventory-pool-leak",
+    "query": "database connection pool release connections rollback leaking deployment",
+    "expected_source_uri": "runbook://inventory/recovery"
+  },
+  {
+    "id": "order-idempotency",
+    "query": "retry order with original idempotency order ID",
+    "expected_source_uri": "runbook://order/recovery"
+  },
+  {
+    "id": "inventory-p95-verification",
+    "query": "verify pool below 70 percent after restart",
+    "expected_source_uri": "runbook://inventory/recovery",
+    "service": "inventory-service",
+    "environment": "demo"
+  },
+  {
+    "id": "order-downstream-timeout",
+    "query": "inventory downstream 503 client timeout restore traffic",
+    "expected_source_uri": "runbook://order/recovery",
+    "service": "order-service",
+    "environment": "demo"
+  }
+]

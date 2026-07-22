@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpsPilot Incident Workspace</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark"><i data-lucide="radar" aria-hidden="true"></i></span>
+      <div><strong>OpsPilot</strong><span>Incident Workspace</span></div>
+    </div>
+    <nav class="view-switcher" aria-label="工作台视图">
+      <button type="button" class="view-switch active" data-view="incidents" aria-selected="true">Incidents</button>
+      <button type="button" class="view-switch" data-view="evaluation" aria-selected="false">Evaluation</button>
+    </nav>
+    <div class="topbar-actions">
+      <span class="system-state"><span class="state-dot"></span>API online</span>
+      <button class="icon-button" id="refresh-button" type="button" aria-label="刷新工作台" data-tooltip="刷新">
+        <i data-lucide="refresh-cw" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="metrics" id="incident-metrics" aria-label="运行摘要">
+    <div><span>活跃事故</span><strong id="metric-active">-</strong></div>
+    <div><span>等待人工</span><strong id="metric-human">-</strong></div>
+    <div><span>待审批动作</span><strong id="metric-approvals">-</strong></div>
+    <div><span>Runbook</span><strong id="metric-runbooks">-</strong></div>
+  </section>
+
+  <main class="workspace" id="incident-workspace">
+    <aside class="incident-pane" aria-label="事故列表">
+      <div class="pane-heading">
+        <div><h2>Incidents</h2><span id="incident-count">0 items</span></div>
+        <select id="incident-filter" aria-label="筛选事故状态">
+          <option value="all">全部状态</option>
+          <option value="active">处理中</option>
+          <option value="NEEDS_HUMAN">等待人工</option>
+          <option value="DIAGNOSED">已诊断</option>
+          <option value="RESOLVED">已恢复</option>
+        </select>
+      </div>
+      <div class="incident-list" id="incident-list"></div>
+    </aside>
+
+    <section class="detail-pane" aria-live="polite">
+      <div class="empty-state" id="empty-state">
+        <i data-lucide="mouse-pointer-2" aria-hidden="true"></i>
+        <strong>选择一个 Incident</strong>
+        <span>调查轨迹、证据和处置状态会显示在这里</span>
+      </div>
+
+      <div id="incident-detail" hidden>
+        <header class="incident-header">
+          <div class="incident-identity">
+            <div class="eyebrow" id="incident-id"></div>
+            <h1 id="incident-title"></h1>
+            <div class="incident-meta" id="incident-meta"></div>
+          </div>
+          <div class="incident-commands">
+            <button class="button secondary" id="run-investigation" type="button">
+              <i data-lucide="play" aria-hidden="true"></i>开始调查
+            </button>
+            <button class="button primary" id="open-action-dialog" type="button">
+              <i data-lucide="wrench" aria-hidden="true"></i>提议修复
+            </button>
+          </div>
+        </header>
+
+        <nav class="tabs" aria-label="Incident 视图">
+          <button type="button" class="tab active" data-tab="overview" aria-selected="true">概览</button>
+          <button type="button" class="tab" data-tab="evidence" aria-selected="false">证据 <span id="evidence-count">0</span></button>
+          <button type="button" class="tab" data-tab="runbooks" aria-selected="false">Runbook</button>
+        </nav>
+
+        <section class="tab-panel active" data-panel="overview">
+          <div class="diagnosis-band" id="diagnosis-band"></div>
+          <div class="section-heading"><h2>Investigation timeline</h2><span id="run-status"></span></div>
+          <div class="timeline" id="timeline"></div>
+        </section>
+
+        <section class="tab-panel" data-panel="evidence" hidden>
+          <div class="section-heading"><h2>Evidence</h2><span>引用均保留来源与校验信息</span></div>
+          <div class="evidence-list" id="evidence-list"></div>
+        </section>
+
+        <section class="tab-panel" data-panel="runbooks" hidden>
+          <form class="search-row" id="runbook-search-form">
+            <label for="runbook-query">检索 Runbook</label>
+            <div>
+              <input id="runbook-query" name="q" type="search" value="error timeout recovery" required minlength="2">
+              <button class="button secondary" type="submit"><i data-lucide="search" aria-hidden="true"></i>检索</button>
+            </div>
+          </form>
+          <div class="runbook-results" id="runbook-results"></div>
+        </section>
+      </div>
+    </section>
+
+    <aside class="action-pane" aria-label="修复动作">
+      <div class="pane-heading"><div><h2>Remediation</h2><span>Human-in-the-loop</span></div></div>
+      <div class="policy-strip"><i data-lucide="shield-check" aria-hidden="true"></i><span>仅允许 demo / staging，执行前必须审批</span></div>
+      <div class="action-list" id="action-list">
+        <div class="side-empty">选择 Incident 查看修复动作</div>
+      </div>
+    </aside>
+  </main>
+
+  <main class="evaluation-view" id="evaluation-view" hidden>
+    <header class="evaluation-header">
+      <div><span class="eyebrow">OFFLINE EVALUATION</span><h1>Agent baseline comparison</h1></div>
+      <div class="evaluation-status" id="evaluation-status"></div>
+    </header>
+    <section class="evaluation-metrics" id="evaluation-metrics" aria-label="评测指标"></section>
+    <section class="comparison-section">
+      <div class="section-heading"><h2>Baseline vs candidate</h2><span id="dataset-digest"></span></div>
+      <div class="comparison-chart" id="comparison-chart"></div>
+    </section>
+    <section class="evaluation-details">
+      <div>
+        <div class="section-heading"><h2>80-case matrix</h2><span id="case-summary"></span></div>
+        <div class="case-grid" id="case-grid" aria-label="逐案例评测结果"></div>
+      </div>
+      <aside class="experiment-facts" id="experiment-facts" aria-label="实验约束"></aside>
+    </section>
+  </main>
+
+  <dialog id="action-dialog">
+    <form method="dialog" id="action-form">
+      <header><div><span class="eyebrow">PROPOSE REMEDIATION</span><h2>新建受控动作</h2></div><button class="icon-button" value="cancel" aria-label="关闭"><i data-lucide="x" aria-hidden="true"></i></button></header>
+      <label>动作类型<select id="action-type"><option value="restart_service">Restart service</option><option value="rollback_deployment">Rollback deployment</option></select></label>
+      <label>目标服务<input id="action-service" required></label>
+      <label>环境<select id="action-environment"><option value="demo">demo</option><option value="staging">staging</option></select></label>
+      <label id="action-version-field" hidden>目标版本<input id="action-version" value="v1.0.0"></label>
+      <label>处置理由<textarea id="action-reason" required minlength="10">Mitigate the active incident after reviewing collected evidence.</textarea></label>
+      <footer><button class="button secondary" value="cancel">取消</button><button class="button primary" id="submit-action" value="default">提交审批</button></footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

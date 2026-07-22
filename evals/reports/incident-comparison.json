@@ -1,0 +1,2837 @@
+{
+  "suite_name": "incident-agent-comparison-v2",
+  "dataset_digest": "fe8a7989e8ad700609984b9d7718bd41a378a3f82ece32565d8d326109210fda",
+  "baseline": {
+    "suite_name": "incident-agent-baseline-v1",
+    "baseline_name": "keyword-signature-v1",
+    "generated_at": "2026-07-22T08:11:07.659140Z",
+    "dataset_digest": "fe8a7989e8ad700609984b9d7718bd41a378a3f82ece32565d8d326109210fda",
+    "metrics": {
+      "case_count": 80,
+      "top1_accuracy": 0.675,
+      "top3_recall": 0.975,
+      "citation_validity": 1.0,
+      "critical_evidence_recall": 1.0,
+      "tool_success_rate": 0.985,
+      "prohibited_action_rate": 0.0,
+      "average_steps": 5.0,
+      "p95_latency_ms": 7,
+      "average_input_tokens": 23.5375,
+      "estimated_suite_cost_usd": 0.00028244999999999995
+    },
+    "thresholds": {
+      "top1_accuracy": 0.6,
+      "top3_recall": 0.8,
+      "citation_validity": 0.9,
+      "tool_success_rate": 0.95,
+      "prohibited_action_rate": 0.0
+    },
+    "passed": true,
+    "cases": [
+      {
+        "case_id": "inventory-503-clear",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 111,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "inventory-refused-trace",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 84,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "inventory-503-with-latency-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 83,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "inventory-latency-clear",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "inventory-deadline-trace",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "inventory-latency-telemetry-gap",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [],
+        "top1_correct": false,
+        "top3_recalled": false,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 124,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "database-pool-clear",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "database-pool-after-deploy-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "bad_deployment",
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "database-pool-metrics",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 8,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "redis-stampede-clear",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 15,
+        "evidence_chars": 100,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "redis-eviction-runbook",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "redis-stampede-telemetry-gap",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [],
+        "top1_correct": false,
+        "top3_recalled": false,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 132,
+        "estimated_input_tokens": 33
+      },
+      {
+        "case_id": "deployment-regression-clear",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 104,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "deployment-trace-regression",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 9,
+        "evidence_chars": 107,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "deployment-with-memory-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "memory_leak",
+          "bad_deployment"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 87,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "memory-leak-clear",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "memory-oom-restart",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 78,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "memory-with-disk-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "memory_leak"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 90,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "network-partition-clear",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "network-reset-traces",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 87,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "network-with-tls-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition",
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 84,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "certificate-expired-clear",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 93,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "certificate-handshake-trace",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 95,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "certificate-with-log-outage",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 53,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "rate-limit-clear",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 94,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "rate-limit-metrics",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 91,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "rate-limit-with-network-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 93,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "disk-saturation-clear",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 94,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "disk-no-space-logs",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 91,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "disk-with-memory-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "inventory-dependency-failure-corroborated",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 89,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "inventory-dependency-failure-single-log",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 62,
+        "estimated_input_tokens": 16
+      },
+      {
+        "case_id": "inventory-dependency-failure-runbook-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "redis_cache_stampede",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "inventory-dependency-failure-telemetry-gap",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 67,
+        "estimated_input_tokens": 17
+      },
+      {
+        "case_id": "inventory-dependency-failure-ambiguous-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "redis_cache_stampede",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 123,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "inventory-latency-corroborated",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 79,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "inventory-latency-single-log",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 52,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "inventory-latency-runbook-noise",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "bad_deployment",
+          "inventory_latency"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 112,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "inventory-latency-telemetry-gap",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 57,
+        "estimated_input_tokens": 15
+      },
+      {
+        "case_id": "inventory-latency-ambiguous-noise",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "bad_deployment",
+          "inventory_latency"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 130,
+        "estimated_input_tokens": 33
+      },
+      {
+        "case_id": "database-pool-exhaustion-corroborated",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "database-pool-exhaustion-single-log",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 74,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "database-pool-exhaustion-runbook-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "memory_leak",
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 106,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "database-pool-exhaustion-telemetry-gap",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 79,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "database-pool-exhaustion-ambiguous-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "memory_leak",
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 124,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "redis-cache-stampede-corroborated",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 82,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "redis-cache-stampede-single-log",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 55,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "redis-cache-stampede-runbook-noise",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "network_partition",
+          "redis_cache_stampede"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 92,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "redis-cache-stampede-telemetry-gap",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 60,
+        "estimated_input_tokens": 15
+      },
+      {
+        "case_id": "redis-cache-stampede-ambiguous-noise",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "network_partition",
+          "redis_cache_stampede"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 110,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "bad-deployment-corroborated",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 98,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "bad-deployment-single-log",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 71,
+        "estimated_input_tokens": 18
+      },
+      {
+        "case_id": "bad-deployment-runbook-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "certificate_expiry",
+          "bad_deployment"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 116,
+        "estimated_input_tokens": 29
+      },
+      {
+        "case_id": "bad-deployment-telemetry-gap",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 76,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "bad-deployment-ambiguous-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "certificate_expiry",
+          "bad_deployment"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 134,
+        "estimated_input_tokens": 34
+      },
+      {
+        "case_id": "memory-leak-corroborated",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 80,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "memory-leak-single-log",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 53,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "memory-leak-runbook-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "memory_leak"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 95,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "memory-leak-telemetry-gap",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 111,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "memory-leak-ambiguous-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "memory_leak"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 113,
+        "estimated_input_tokens": 29
+      },
+      {
+        "case_id": "network-partition-corroborated",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 76,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "network-partition-single-log",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 49,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "network-partition-runbook-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "network_partition"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 90,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "network-partition-telemetry-gap",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 107,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "network-partition-ambiguous-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "network_partition"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 108,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "certificate-expiry-corroborated",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "certificate-expiry-single-log",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 61,
+        "estimated_input_tokens": 16
+      },
+      {
+        "case_id": "certificate-expiry-runbook-noise",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "inventory_dependency_failure",
+          "certificate_expiry"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 109,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "certificate-expiry-telemetry-gap",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 119,
+        "estimated_input_tokens": 30
+      },
+      {
+        "case_id": "certificate-expiry-ambiguous-noise",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "inventory_dependency_failure",
+          "certificate_expiry"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 127,
+        "estimated_input_tokens": 32
+      },
+      {
+        "case_id": "rate-limit-exhaustion-corroborated",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 72,
+        "estimated_input_tokens": 18
+      },
+      {
+        "case_id": "rate-limit-exhaustion-single-log",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 45,
+        "estimated_input_tokens": 12
+      },
+      {
+        "case_id": "rate-limit-exhaustion-runbook-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "rate-limit-exhaustion-telemetry-gap",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 103,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "rate-limit-exhaustion-ambiguous-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 106,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "disk-saturation-corroborated",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 78,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "disk-saturation-single-log",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 51,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "disk-saturation-runbook-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "database_pool_exhaustion",
+          "disk_saturation"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 118,
+        "estimated_input_tokens": 30
+      },
+      {
+        "case_id": "disk-saturation-telemetry-gap",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 109,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "disk-saturation-ambiguous-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "database_pool_exhaustion",
+          "disk_saturation"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 136,
+        "estimated_input_tokens": 34
+      }
+    ]
+  },
+  "candidate": {
+    "suite_name": "incident-agent-baseline-v1",
+    "baseline_name": "source-weighted-v2",
+    "generated_at": "2026-07-22T08:11:08.124865Z",
+    "dataset_digest": "fe8a7989e8ad700609984b9d7718bd41a378a3f82ece32565d8d326109210fda",
+    "metrics": {
+      "case_count": 80,
+      "top1_accuracy": 0.9375,
+      "top3_recall": 0.975,
+      "citation_validity": 1.0,
+      "critical_evidence_recall": 1.0,
+      "tool_success_rate": 0.985,
+      "prohibited_action_rate": 0.0,
+      "average_steps": 5.0,
+      "p95_latency_ms": 7,
+      "average_input_tokens": 23.5375,
+      "estimated_suite_cost_usd": 0.00028244999999999995
+    },
+    "thresholds": {
+      "top1_accuracy": 0.6,
+      "top3_recall": 0.8,
+      "citation_validity": 0.9,
+      "tool_success_rate": 0.95,
+      "prohibited_action_rate": 0.0
+    },
+    "passed": true,
+    "cases": [
+      {
+        "case_id": "inventory-503-clear",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 111,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "inventory-refused-trace",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 84,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "inventory-503-with-latency-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 83,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "inventory-latency-clear",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "inventory-deadline-trace",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "inventory-latency-telemetry-gap",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [],
+        "top1_correct": false,
+        "top3_recalled": false,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 124,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "database-pool-clear",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "database-pool-after-deploy-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion",
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "database-pool-metrics",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "redis-stampede-clear",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 100,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "redis-eviction-runbook",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "redis-stampede-telemetry-gap",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [],
+        "top1_correct": false,
+        "top3_recalled": false,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 132,
+        "estimated_input_tokens": 33
+      },
+      {
+        "case_id": "deployment-regression-clear",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 104,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "deployment-trace-regression",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 107,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "deployment-with-memory-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "memory_leak",
+          "bad_deployment"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 87,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "memory-leak-clear",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "memory-oom-restart",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 78,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "memory-with-disk-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "memory_leak"
+        ],
+        "top1_correct": false,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 90,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "network-partition-clear",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "network-reset-traces",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 87,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "network-with-tls-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition",
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 84,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "certificate-expired-clear",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 93,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "certificate-handshake-trace",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 95,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "certificate-with-log-outage",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 53,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "rate-limit-clear",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 8,
+        "evidence_chars": 94,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "rate-limit-metrics",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 91,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "rate-limit-with-network-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 93,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "disk-saturation-clear",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 94,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "disk-no-space-logs",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 91,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "disk-with-memory-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 99,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "inventory-dependency-failure-corroborated",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 89,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "inventory-dependency-failure-single-log",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 62,
+        "estimated_input_tokens": 16
+      },
+      {
+        "case_id": "inventory-dependency-failure-runbook-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure",
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 105,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "inventory-dependency-failure-telemetry-gap",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 67,
+        "estimated_input_tokens": 17
+      },
+      {
+        "case_id": "inventory-dependency-failure-ambiguous-noise",
+        "expected_root_cause": "inventory_dependency_failure",
+        "predicted_root_causes": [
+          "inventory_dependency_failure",
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 123,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "inventory-latency-corroborated",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 79,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "inventory-latency-single-log",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 52,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "inventory-latency-runbook-noise",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 112,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "inventory-latency-telemetry-gap",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 57,
+        "estimated_input_tokens": 15
+      },
+      {
+        "case_id": "inventory-latency-ambiguous-noise",
+        "expected_root_cause": "inventory_latency",
+        "predicted_root_causes": [
+          "inventory_latency",
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 130,
+        "estimated_input_tokens": 33
+      },
+      {
+        "case_id": "database-pool-exhaustion-corroborated",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 101,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "database-pool-exhaustion-single-log",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 74,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "database-pool-exhaustion-runbook-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion",
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 106,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "database-pool-exhaustion-telemetry-gap",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 79,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "database-pool-exhaustion-ambiguous-noise",
+        "expected_root_cause": "database_pool_exhaustion",
+        "predicted_root_causes": [
+          "database_pool_exhaustion",
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 124,
+        "estimated_input_tokens": 31
+      },
+      {
+        "case_id": "redis-cache-stampede-corroborated",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 82,
+        "estimated_input_tokens": 21
+      },
+      {
+        "case_id": "redis-cache-stampede-single-log",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 55,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "redis-cache-stampede-runbook-noise",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede",
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 92,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "redis-cache-stampede-telemetry-gap",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 60,
+        "estimated_input_tokens": 15
+      },
+      {
+        "case_id": "redis-cache-stampede-ambiguous-noise",
+        "expected_root_cause": "redis_cache_stampede",
+        "predicted_root_causes": [
+          "redis_cache_stampede",
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 110,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "bad-deployment-corroborated",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 98,
+        "estimated_input_tokens": 25
+      },
+      {
+        "case_id": "bad-deployment-single-log",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 71,
+        "estimated_input_tokens": 18
+      },
+      {
+        "case_id": "bad-deployment-runbook-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment",
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 116,
+        "estimated_input_tokens": 29
+      },
+      {
+        "case_id": "bad-deployment-telemetry-gap",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 0.8,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 76,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "bad-deployment-ambiguous-noise",
+        "expected_root_cause": "bad_deployment",
+        "predicted_root_causes": [
+          "bad_deployment",
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 134,
+        "estimated_input_tokens": 34
+      },
+      {
+        "case_id": "memory-leak-corroborated",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 80,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "memory-leak-single-log",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 53,
+        "estimated_input_tokens": 14
+      },
+      {
+        "case_id": "memory-leak-runbook-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak",
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 95,
+        "estimated_input_tokens": 24
+      },
+      {
+        "case_id": "memory-leak-telemetry-gap",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 111,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "memory-leak-ambiguous-noise",
+        "expected_root_cause": "memory_leak",
+        "predicted_root_causes": [
+          "memory_leak",
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 113,
+        "estimated_input_tokens": 29
+      },
+      {
+        "case_id": "network-partition-corroborated",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 76,
+        "estimated_input_tokens": 19
+      },
+      {
+        "case_id": "network-partition-single-log",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 8,
+        "evidence_chars": 49,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "network-partition-runbook-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition",
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 90,
+        "estimated_input_tokens": 23
+      },
+      {
+        "case_id": "network-partition-telemetry-gap",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 7,
+        "evidence_chars": 107,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "network-partition-ambiguous-noise",
+        "expected_root_cause": "network_partition",
+        "predicted_root_causes": [
+          "network_partition",
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 108,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "certificate-expiry-corroborated",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "certificate-expiry-single-log",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 61,
+        "estimated_input_tokens": 16
+      },
+      {
+        "case_id": "certificate-expiry-runbook-noise",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 109,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "certificate-expiry-telemetry-gap",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 119,
+        "estimated_input_tokens": 30
+      },
+      {
+        "case_id": "certificate-expiry-ambiguous-noise",
+        "expected_root_cause": "certificate_expiry",
+        "predicted_root_causes": [
+          "certificate_expiry",
+          "inventory_dependency_failure"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 127,
+        "estimated_input_tokens": 32
+      },
+      {
+        "case_id": "rate-limit-exhaustion-corroborated",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 72,
+        "estimated_input_tokens": 18
+      },
+      {
+        "case_id": "rate-limit-exhaustion-single-log",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 45,
+        "estimated_input_tokens": 12
+      },
+      {
+        "case_id": "rate-limit-exhaustion-runbook-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 88,
+        "estimated_input_tokens": 22
+      },
+      {
+        "case_id": "rate-limit-exhaustion-telemetry-gap",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 103,
+        "estimated_input_tokens": 26
+      },
+      {
+        "case_id": "rate-limit-exhaustion-ambiguous-noise",
+        "expected_root_cause": "rate_limit_exhaustion",
+        "predicted_root_causes": [
+          "rate_limit_exhaustion",
+          "inventory_latency"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 106,
+        "estimated_input_tokens": 27
+      },
+      {
+        "case_id": "disk-saturation-corroborated",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 78,
+        "estimated_input_tokens": 20
+      },
+      {
+        "case_id": "disk-saturation-single-log",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 51,
+        "estimated_input_tokens": 13
+      },
+      {
+        "case_id": "disk-saturation-runbook-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 5,
+        "evidence_chars": 118,
+        "estimated_input_tokens": 30
+      },
+      {
+        "case_id": "disk-saturation-telemetry-gap",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 6,
+        "evidence_chars": 109,
+        "estimated_input_tokens": 28
+      },
+      {
+        "case_id": "disk-saturation-ambiguous-noise",
+        "expected_root_cause": "disk_saturation",
+        "predicted_root_causes": [
+          "disk_saturation",
+          "database_pool_exhaustion"
+        ],
+        "top1_correct": true,
+        "top3_recalled": true,
+        "citation_validity": 1.0,
+        "critical_evidence_recall": 1.0,
+        "tool_success_rate": 1.0,
+        "prohibited_actions": [],
+        "steps_used": 5,
+        "latency_ms": 4,
+        "evidence_chars": 136,
+        "estimated_input_tokens": 34
+      }
+    ]
+  },
+  "top1_delta": 0.26249999999999996,
+  "top3_delta": 0.0,
+  "token_delta": 0.0,
+  "cost_delta_usd": 0.0,
+  "stability": {
+    "repetitions": 3,
+    "top1_agreement": 1.0,
+    "top3_agreement": 1.0,
+    "top1_accuracy_min": 0.9375,
+    "top1_accuracy_max": 0.9375
+  }
+}

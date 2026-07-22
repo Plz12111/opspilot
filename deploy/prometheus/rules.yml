@@ -1,0 +1,30 @@
+groups:
+  - name: demo-services
+    rules:
+      - alert: DemoServiceHighErrorRate
+        expr: |
+          sum by (service) (rate(demo_http_requests_total{status=~"5.."}[1m]))
+          /
+          clamp_min(sum by (service) (rate(demo_http_requests_total[1m])), 0.001)
+          > 0.5
+        for: 15s
+        labels:
+          severity: P1
+          environment: demo
+        annotations:
+          summary: "{{ $labels.service }} error rate is above 50%"
+          description: "More than half of requests failed during the last minute."
+
+      - alert: DemoServiceHighLatency
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (service, le) (rate(demo_http_request_duration_seconds_bucket[1m]))
+          ) > 0.5
+        for: 15s
+        labels:
+          severity: P2
+          environment: demo
+        annotations:
+          summary: "{{ $labels.service }} P95 latency is above 500ms"
+          description: "The service has sustained high request latency."
